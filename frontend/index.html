@@ -1,0 +1,282 @@
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Pop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css.css">
+</head>
+
+<body>
+    <header>
+        <h1>K-Pop</h1>
+    </header>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="groups-tab">Grupos</button>
+            <button class="tab-btn" data-tab="idols-tab">Idols</button>
+        </div>
+
+        <!-- Tab: Grupos -->
+        <div id="groups-tab" class="tab-content active">
+            <div class="section-header">
+                <h2>Grupos</h2>
+                <div class="search-bar">
+                    <input type="text" id="group-search" placeholder="Buscar grupos...">
+                    <button id="group-search-btn" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="alert alert-success" id="group-alert-success"></div>
+            <div class="alert alert-danger" id="group-alert-danger"></div>
+
+            <div class="form-section">
+                <h3>Agregar Grupo</h3>
+                <form id="group-form">
+                    <div class="form-group">
+                        <label for="group-name">Nombre</label>
+                        <input type="text" id="group-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="group-company">Compañía</label>
+                        <input type="text" id="group-company">
+                    </div>
+                    <div class="form-group">
+                        <label for="group-debut">Fecha de Debut</label>
+                        <input type="date" id="group-debut">
+                    </div>
+                    <div class="form-group">
+                        <label for="group-fandom">Nombre del Fandom</label>
+                        <input type="text" id="group-fandom">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Crear Grupo</button>
+                </form>
+            </div>
+
+            <div class="cards-container">
+                <div id="groups-loader" class="loader">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Cargando grupos...</span>
+                </div>
+                <div id="groups-empty" class="empty-state" style="display: none;">
+                    <i class="fas fa-users"></i>
+                    <h3>No hay grupos</h3>
+                    <p>Crea un nuevo grupo para comenzar</p>
+                </div>
+                <div id="groups-container" class="cards-grid"></div>
+            </div>
+        </div>
+
+        <!-- Tab: Idols -->
+        <div id="idols-tab" class="tab-content">
+            <div class="section-header">
+                <h2>Idols</h2>
+                <div class="search-bar">
+                    <input type="text" id="idol-search" placeholder="Buscar idols...">
+                    <select id="idol-filter-group">
+                        <option value="">Todos los grupos</option>
+                    </select>
+                    <button id="idol-search-btn" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="alert alert-success" id="idol-alert-success"></div>
+            <div class="alert alert-danger" id="idol-alert-danger"></div>
+
+            <div class="form-section">
+                <h3>Agregar Idol</h3>
+                <form id="idol-form">
+                    <div class="form-group">
+                        <label for="idol-stage-name">Nombre Artístico</label>
+                        <input type="text" id="idol-stage-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="idol-real-name">Nombre Real</label>
+                        <input type="text" id="idol-real-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="idol-birthday">Fecha de Nacimiento</label>
+                        <input type="date" id="idol-birthday">
+                    </div>
+                    <div class="form-group">
+                        <label for="idol-nationality">Nacionalidad</label>
+                        <input type="text" id="idol-nationality">
+                    </div>
+                    <div class="form-group">
+                        <label for="idol-position">Posición</label>
+                        <input type="text" id="idol-position">
+                    </div>
+                    <div class="form-group">
+                        <label for="idol-group">Grupo</label>
+                        <select id="idol-group">
+                            <option value="">Seleccionar grupo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Crear Idol</button>
+                </form>
+            </div>
+
+            <div class="cards-container">
+                <div id="idols-loader" class="loader">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Cargando idols...</span>
+                </div>
+                <div id="idols-empty" class="empty-state" style="display: none;">
+                    <i class="fas fa-user"></i>
+                    <h3>No hay idols</h3>
+                    <p>Crea un nuevo idol para comenzar</p>
+                </div>
+                <div id="idols-container" class="cards-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- View Group Modal -->
+    <div id="view-group-modal" class="modal-backdrop">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="view-group-title"></h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="view-group-details"></div>
+                <h3>Miembros</h3>
+                <div id="view-group-members" class="members-grid"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="close-view-group" class="btn btn-secondary">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Idol Modal -->
+    <div id="view-idol-modal" class="modal-backdrop">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="view-idol-title"></h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="view-idol-details"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="close-view-idol" class="btn btn-secondary">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Group Modal -->
+    <div id="edit-group-modal" class="modal-backdrop">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Editar Grupo</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-group-form">
+                    <input type="hidden" id="edit-group-id">
+                    <div class="form-group">
+                        <label for="edit-group-name">Nombre</label>
+                        <input type="text" id="edit-group-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-group-company">Compañía</label>
+                        <input type="text" id="edit-group-company">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-group-debut">Fecha de Debut</label>
+                        <input type="date" id="edit-group-debut">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-group-fandom">Nombre del Fandom</label>
+                        <input type="text" id="edit-group-fandom">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-group-active">Estado</label>
+                        <select id="edit-group-active">
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="save-edit-group" class="btn btn-primary">Guardar</button>
+                <button id="cancel-edit-group" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Idol Modal -->
+    <div id="edit-idol-modal" class="modal-backdrop">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Editar Idol</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-idol-form">
+                    <input type="hidden" id="edit-idol-id">
+                    <div class="form-group">
+                        <label for="edit-idol-stage-name">Nombre Artístico</label>
+                        <input type="text" id="edit-idol-stage-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-idol-real-name">Nombre Real</label>
+                        <input type="text" id="edit-idol-real-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-idol-birthday">Fecha de Nacimiento</label>
+                        <input type="date" id="edit-idol-birthday">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-idol-nationality">Nacionalidad</label>
+                        <input type="text" id="edit-idol-nationality">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-idol-position">Posición</label>
+                        <input type="text" id="edit-idol-position">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-idol-group">Grupo</label>
+                        <select id="edit-idol-group">
+                            <option value="">Seleccionar grupo</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="save-edit-idol" class="btn btn-primary">Guardar</button>
+                <button id="cancel-edit-idol" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div id="confirm-delete-modal" class="modal-backdrop">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Confirmar Eliminación</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-delete-message"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-delete" class="btn btn-danger">Eliminar</button>
+                <button id="cancel-delete" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    <script defer src="js/main.js"></script>
+
+</body>
+
+</html>
