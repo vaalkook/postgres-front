@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/api';
+const API_URL = '/api';
 let groups = [];
 let idols = [];
 let currentItemToDelete = { type: null, id: null };
